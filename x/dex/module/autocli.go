@@ -39,6 +39,17 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Short:          "Shows a buy-order-book",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}},
 				},
+				{
+					RpcMethod: "DenomTraceAll",
+					Use:       "list-denom-trace",
+					Short:     "List all denom-trace",
+				},
+				{
+					RpcMethod:      "DenomTrace",
+					Use:            "show-denom-trace [id]",
+					Short:          "Shows a denom-trace",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}},
+				},
 				// this line is used by ignite scaffolding # autocli/query
 			},
 		},

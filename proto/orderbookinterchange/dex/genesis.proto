@@ -7,6 +7,7 @@ import "gogoproto/gogo.proto";
 import "orderbookinterchange/dex/params.proto";
 import "orderbookinterchange/dex/sell_order_book.proto";
 import "orderbookinterchange/dex/buy_order_book.proto";
+import "orderbookinterchange/dex/denom_trace.proto";
 
 option go_package = "orderbook-interchange/x/dex/types";
 
@@ -18,5 +19,6 @@ message GenesisState {
            string        port_id           = 2;
   repeated SellOrderBook sellOrderBookList = 3 [(gogoproto.nullable) = false] ;
   repeated BuyOrderBook  buyOrderBookList  = 4 [(gogoproto.nullable) = false] ;
+  repeated DenomTrace    denomTraceList    = 5 [(gogoproto.nullable) = false] ;
 }
 

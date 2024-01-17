@@ -9,6 +9,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "orderbookinterchange/dex/params.proto";
 import "orderbookinterchange/dex/sell_order_book.proto";
 import "orderbookinterchange/dex/buy_order_book.proto";
+import "orderbookinterchange/dex/denom_trace.proto";
 
 option go_package = "orderbook-interchange/x/dex/types";
 
@@ -38,6 +39,16 @@ service Query {
   }
   rpc BuyOrderBookAll (QueryAllBuyOrderBookRequest) returns (QueryAllBuyOrderBookResponse) {
     option (google.api.http).get = "/orderbook-interchange/dex/buy_order_book";
+  
+  }
+  
+  // Queries a list of DenomTrace items.
+  rpc DenomTrace    (QueryGetDenomTraceRequest) returns (QueryGetDenomTraceResponse) {
+    option (google.api.http).get = "/orderbook-interchange/dex/denom_trace/{index}";
+  
+  }
+  rpc DenomTraceAll (QueryAllDenomTraceRequest) returns (QueryAllDenomTraceResponse) {
+    option (google.api.http).get = "/orderbook-interchange/dex/denom_trace";
   
   }
 }
@@ -83,5 +94,22 @@ message QueryAllBuyOrderBookRequest {
 message QueryAllBuyOrderBookResponse {
   repeated BuyOrderBook                           buyOrderBook = 1 [(gogoproto.nullable) = false];
            cosmos.base.query.v1beta1.PageResponse pagination   = 2;
+}
+
+message QueryGetDenomTraceRequest {
+  string index = 1;
+}
+
+message QueryGetDenomTraceResponse {
+  DenomTrace denomTrace = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllDenomTraceRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllDenomTraceResponse {
+  repeated DenomTrace                             denomTrace = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

@@ -116,12 +116,64 @@ func (x *_GenesisState_4_list) IsValid() bool {
 	return x.list != nil
 }
 
+var _ protoreflect.List = (*_GenesisState_5_list)(nil)
+
+type _GenesisState_5_list struct {
+	list *[]*DenomTrace
+}
+
+func (x *_GenesisState_5_list) Len() int {
+	if x.list == nil {
+		return 0
+	}
+	return len(*x.list)
+}
+
+func (x *_GenesisState_5_list) Get(i int) protoreflect.Value {
+	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
+}
+
+func (x *_GenesisState_5_list) Set(i int, value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*DenomTrace)
+	(*x.list)[i] = concreteValue
+}
+
+func (x *_GenesisState_5_list) Append(value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*DenomTrace)
+	*x.list = append(*x.list, concreteValue)
+}
+
+func (x *_GenesisState_5_list) AppendMutable() protoreflect.Value {
+	v := new(DenomTrace)
+	*x.list = append(*x.list, v)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_GenesisState_5_list) Truncate(n int) {
+	for i := n; i < len(*x.list); i++ {
+		(*x.list)[i] = nil
+	}
+	*x.list = (*x.list)[:n]
+}
+
+func (x *_GenesisState_5_list) NewElement() protoreflect.Value {
+	v := new(DenomTrace)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_GenesisState_5_list) IsValid() bool {
+	return x.list != nil
+}
+
 var (
 	md_GenesisState                   protoreflect.MessageDescriptor
 	fd_GenesisState_params            protoreflect.FieldDescriptor
 	fd_GenesisState_port_id           protoreflect.FieldDescriptor
 	fd_GenesisState_sellOrderBookList protoreflect.FieldDescriptor
 	fd_GenesisState_buyOrderBookList  protoreflect.FieldDescriptor
+	fd_GenesisState_denomTraceList    protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -131,6 +183,7 @@ func init() {
 	fd_GenesisState_port_id = md_GenesisState.Fields().ByName("port_id")
 	fd_GenesisState_sellOrderBookList = md_GenesisState.Fields().ByName("sellOrderBookList")
 	fd_GenesisState_buyOrderBookList = md_GenesisState.Fields().ByName("buyOrderBookList")
+	fd_GenesisState_denomTraceList = md_GenesisState.Fields().ByName("denomTraceList")
 }
 
 var _ protoreflect.Message = (*fastReflection_GenesisState)(nil)
@@ -222,6 +275,12 @@ func (x *fastReflection_GenesisState) Range(f func(protoreflect.FieldDescriptor,
 			return
 		}
 	}
+	if len(x.DenomTraceList) != 0 {
+		value := protoreflect.ValueOfList(&_GenesisState_5_list{list: &x.DenomTraceList})
+		if !f(fd_GenesisState_denomTraceList, value) {
+			return
+		}
+	}
 }
 
 // Has reports whether a field is populated.
@@ -245,6 +304,8 @@ func (x *fastReflection_GenesisState) Has(fd protoreflect.FieldDescriptor) bool 
 		return len(x.SellOrderBookList) != 0
 	case "orderbookinterchange.dex.GenesisState.buyOrderBookList":
 		return len(x.BuyOrderBookList) != 0
+	case "orderbookinterchange.dex.GenesisState.denomTraceList":
+		return len(x.DenomTraceList) != 0
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: orderbookinterchange.dex.GenesisState"))
@@ -269,6 +330,8 @@ func (x *fastReflection_GenesisState) Clear(fd protoreflect.FieldDescriptor) {
 		x.SellOrderBookList = nil
 	case "orderbookinterchange.dex.GenesisState.buyOrderBookList":
 		x.BuyOrderBookList = nil
+	case "orderbookinterchange.dex.GenesisState.denomTraceList":
+		x.DenomTraceList = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: orderbookinterchange.dex.GenesisState"))
@@ -303,6 +366,12 @@ func (x *fastReflection_GenesisState) Get(descriptor protoreflect.FieldDescripto
 		}
 		listValue := &_GenesisState_4_list{list: &x.BuyOrderBookList}
 		return protoreflect.ValueOfList(listValue)
+	case "orderbookinterchange.dex.GenesisState.denomTraceList":
+		if len(x.DenomTraceList) == 0 {
+			return protoreflect.ValueOfList(&_GenesisState_5_list{})
+		}
+		listValue := &_GenesisState_5_list{list: &x.DenomTraceList}
+		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: orderbookinterchange.dex.GenesisState"))
@@ -335,6 +404,10 @@ func (x *fastReflection_GenesisState) Set(fd protoreflect.FieldDescriptor, value
 		lv := value.List()
 		clv := lv.(*_GenesisState_4_list)
 		x.BuyOrderBookList = *clv.list
+	case "orderbookinterchange.dex.GenesisState.denomTraceList":
+		lv := value.List()
+		clv := lv.(*_GenesisState_5_list)
+		x.DenomTraceList = *clv.list
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: orderbookinterchange.dex.GenesisState"))
@@ -372,6 +445,12 @@ func (x *fastReflection_GenesisState) Mutable(fd protoreflect.FieldDescriptor) p
 		}
 		value := &_GenesisState_4_list{list: &x.BuyOrderBookList}
 		return protoreflect.ValueOfList(value)
+	case "orderbookinterchange.dex.GenesisState.denomTraceList":
+		if x.DenomTraceList == nil {
+			x.DenomTraceList = []*DenomTrace{}
+		}
+		value := &_GenesisState_5_list{list: &x.DenomTraceList}
+		return protoreflect.ValueOfList(value)
 	case "orderbookinterchange.dex.GenesisState.port_id":
 		panic(fmt.Errorf("field port_id of message orderbookinterchange.dex.GenesisState is not mutable"))
 	default:
@@ -398,6 +477,9 @@ func (x *fastReflection_GenesisState) NewField(fd protoreflect.FieldDescriptor) 
 	case "orderbookinterchange.dex.GenesisState.buyOrderBookList":
 		list := []*BuyOrderBook{}
 		return protoreflect.ValueOfList(&_GenesisState_4_list{list: &list})
+	case "orderbookinterchange.dex.GenesisState.denomTraceList":
+		list := []*DenomTrace{}
+		return protoreflect.ValueOfList(&_GenesisState_5_list{list: &list})
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: orderbookinterchange.dex.GenesisState"))
@@ -487,6 +569,12 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
 		}
+		if len(x.DenomTraceList) > 0 {
+			for _, e := range x.DenomTraceList {
+				l = options.Size(e)
+				n += 1 + l + runtime.Sov(uint64(l))
+			}
+		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
 		}
@@ -515,6 +603,22 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 		if x.unknownFields != nil {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
+		}
+		if len(x.DenomTraceList) > 0 {
+			for iNdEx := len(x.DenomTraceList) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.DenomTraceList[iNdEx])
+				if err != nil {
+					return protoiface.MarshalOutput{
+						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+						Buf:               input.Buf,
+					}, err
+				}
+				i -= len(encoded)
+				copy(dAtA[i:], encoded)
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+				i--
+				dAtA[i] = 0x2a
+			}
 		}
 		if len(x.BuyOrderBookList) > 0 {
 			for iNdEx := len(x.BuyOrderBookList) - 1; iNdEx >= 0; iNdEx-- {
@@ -754,6 +858,40 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
+			case 5:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field DenomTraceList", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.DenomTraceList = append(x.DenomTraceList, &DenomTrace{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.DenomTraceList[len(x.DenomTraceList)-1]); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -813,6 +951,7 @@ type GenesisState struct {
 	PortId            string           `protobuf:"bytes,2,opt,name=port_id,json=portId,proto3" json:"port_id,omitempty"`
 	SellOrderBookList []*SellOrderBook `protobuf:"bytes,3,rep,name=sellOrderBookList,proto3" json:"sellOrderBookList,omitempty"`
 	BuyOrderBookList  []*BuyOrderBook  `protobuf:"bytes,4,rep,name=buyOrderBookList,proto3" json:"buyOrderBookList,omitempty"`
+	DenomTraceList    []*DenomTrace    `protobuf:"bytes,5,rep,name=denomTraceList,proto3" json:"denomTraceList,omitempty"`
 }
 
 func (x *GenesisState) Reset() {
@@ -863,6 +1002,13 @@ func (x *GenesisState) GetBuyOrderBookList() []*BuyOrderBook {
 	return nil
 }
 
+func (x *GenesisState) GetDenomTraceList() []*DenomTrace {
+	if x != nil {
+		return x.DenomTraceList
+	}
+	return nil
+}
+
 var File_orderbookinterchange_dex_genesis_proto protoreflect.FileDescriptor
 
 var file_orderbookinterchange_dex_genesis_proto_rawDesc = []byte{
@@ -881,25 +1027,33 @@ var file_orderbookinterchange_dex_genesis_proto_rawDesc = []byte{
 	0x74, 0x6f, 0x1a, 0x2d, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x62, 0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x74,
 	0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x2f, 0x64, 0x65, 0x78, 0x2f, 0x62, 0x75, 0x79,
 	0x5f, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x5f, 0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x22, 0xa3, 0x02, 0x0a, 0x0c, 0x47, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x53, 0x74, 0x61,
-	0x74, 0x65, 0x12, 0x43, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x0b, 0x32, 0x20, 0x2e, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x62, 0x6f, 0x6f, 0x6b, 0x69, 0x6e,
-	0x74, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x2e, 0x64, 0x65, 0x78, 0x2e, 0x50, 0x61,
-	0x72, 0x61, 0x6d, 0x73, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52,
-	0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x17, 0x0a, 0x07, 0x70, 0x6f, 0x72, 0x74, 0x5f,
-	0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x6f, 0x72, 0x74, 0x49, 0x64,
-	0x12, 0x5b, 0x0a, 0x11, 0x73, 0x65, 0x6c, 0x6c, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x42, 0x6f, 0x6f,
-	0x6b, 0x4c, 0x69, 0x73, 0x74, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x6f, 0x72,
-	0x64, 0x65, 0x72, 0x62, 0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e,
-	0x67, 0x65, 0x2e, 0x64, 0x65, 0x78, 0x2e, 0x53, 0x65, 0x6c, 0x6c, 0x4f, 0x72, 0x64, 0x65, 0x72,
-	0x42, 0x6f, 0x6f, 0x6b, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x11, 0x73, 0x65, 0x6c, 0x6c,
-	0x4f, 0x72, 0x64, 0x65, 0x72, 0x42, 0x6f, 0x6f, 0x6b, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x58, 0x0a,
-	0x10, 0x62, 0x75, 0x79, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x42, 0x6f, 0x6f, 0x6b, 0x4c, 0x69, 0x73,
-	0x74, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x62,
+	0x6f, 0x1a, 0x2a, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x62, 0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x74, 0x65,
+	0x72, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x2f, 0x64, 0x65, 0x78, 0x2f, 0x64, 0x65, 0x6e, 0x6f,
+	0x6d, 0x5f, 0x74, 0x72, 0x61, 0x63, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xf7, 0x02,
+	0x0a, 0x0c, 0x47, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x53, 0x74, 0x61, 0x74, 0x65, 0x12, 0x43,
+	0x0a, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x20,
+	0x2e, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x62, 0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x63,
+	0x68, 0x61, 0x6e, 0x67, 0x65, 0x2e, 0x64, 0x65, 0x78, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73,
+	0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x70, 0x61, 0x72,
+	0x61, 0x6d, 0x73, 0x12, 0x17, 0x0a, 0x07, 0x70, 0x6f, 0x72, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x6f, 0x72, 0x74, 0x49, 0x64, 0x12, 0x5b, 0x0a, 0x11,
+	0x73, 0x65, 0x6c, 0x6c, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x42, 0x6f, 0x6f, 0x6b, 0x4c, 0x69, 0x73,
+	0x74, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x62,
 	0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x2e, 0x64,
-	0x65, 0x78, 0x2e, 0x42, 0x75, 0x79, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x42, 0x6f, 0x6f, 0x6b, 0x42,
-	0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x10, 0x62, 0x75, 0x79, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x42,
-	0x6f, 0x6f, 0x6b, 0x4c, 0x69, 0x73, 0x74, 0x42, 0xd8, 0x01, 0x0a, 0x1c, 0x63, 0x6f, 0x6d, 0x2e,
+	0x65, 0x78, 0x2e, 0x53, 0x65, 0x6c, 0x6c, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x42, 0x6f, 0x6f, 0x6b,
+	0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x11, 0x73, 0x65, 0x6c, 0x6c, 0x4f, 0x72, 0x64, 0x65,
+	0x72, 0x42, 0x6f, 0x6f, 0x6b, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x58, 0x0a, 0x10, 0x62, 0x75, 0x79,
+	0x4f, 0x72, 0x64, 0x65, 0x72, 0x42, 0x6f, 0x6f, 0x6b, 0x4c, 0x69, 0x73, 0x74, 0x18, 0x04, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x62, 0x6f, 0x6f, 0x6b, 0x69,
+	0x6e, 0x74, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x2e, 0x64, 0x65, 0x78, 0x2e, 0x42,
+	0x75, 0x79, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x42, 0x6f, 0x6f, 0x6b, 0x42, 0x04, 0xc8, 0xde, 0x1f,
+	0x00, 0x52, 0x10, 0x62, 0x75, 0x79, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x42, 0x6f, 0x6f, 0x6b, 0x4c,
+	0x69, 0x73, 0x74, 0x12, 0x52, 0x0a, 0x0e, 0x64, 0x65, 0x6e, 0x6f, 0x6d, 0x54, 0x72, 0x61, 0x63,
+	0x65, 0x4c, 0x69, 0x73, 0x74, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x24, 0x2e, 0x6f, 0x72,
+	0x64, 0x65, 0x72, 0x62, 0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e,
+	0x67, 0x65, 0x2e, 0x64, 0x65, 0x78, 0x2e, 0x44, 0x65, 0x6e, 0x6f, 0x6d, 0x54, 0x72, 0x61, 0x63,
+	0x65, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0e, 0x64, 0x65, 0x6e, 0x6f, 0x6d, 0x54, 0x72,
+	0x61, 0x63, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x42, 0xd8, 0x01, 0x0a, 0x1c, 0x63, 0x6f, 0x6d, 0x2e,
 	0x6f, 0x72, 0x64, 0x65, 0x72, 0x62, 0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x63, 0x68,
 	0x61, 0x6e, 0x67, 0x65, 0x2e, 0x64, 0x65, 0x78, 0x42, 0x0c, 0x47, 0x65, 0x6e, 0x65, 0x73, 0x69,
 	0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x29, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73,
@@ -934,16 +1088,18 @@ var file_orderbookinterchange_dex_genesis_proto_goTypes = []interface{}{
 	(*Params)(nil),        // 1: orderbookinterchange.dex.Params
 	(*SellOrderBook)(nil), // 2: orderbookinterchange.dex.SellOrderBook
 	(*BuyOrderBook)(nil),  // 3: orderbookinterchange.dex.BuyOrderBook
+	(*DenomTrace)(nil),    // 4: orderbookinterchange.dex.DenomTrace
 }
 var file_orderbookinterchange_dex_genesis_proto_depIdxs = []int32{
 	1, // 0: orderbookinterchange.dex.GenesisState.params:type_name -> orderbookinterchange.dex.Params
 	2, // 1: orderbookinterchange.dex.GenesisState.sellOrderBookList:type_name -> orderbookinterchange.dex.SellOrderBook
 	3, // 2: orderbookinterchange.dex.GenesisState.buyOrderBookList:type_name -> orderbookinterchange.dex.BuyOrderBook
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	4, // 3: orderbookinterchange.dex.GenesisState.denomTraceList:type_name -> orderbookinterchange.dex.DenomTrace
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_orderbookinterchange_dex_genesis_proto_init() }
@@ -954,6 +1110,7 @@ func file_orderbookinterchange_dex_genesis_proto_init() {
 	file_orderbookinterchange_dex_params_proto_init()
 	file_orderbookinterchange_dex_sell_order_book_proto_init()
 	file_orderbookinterchange_dex_buy_order_book_proto_init()
+	file_orderbookinterchange_dex_denom_trace_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_orderbookinterchange_dex_genesis_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GenesisState); i {
