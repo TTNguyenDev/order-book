@@ -19,6 +19,7 @@ service Msg {
   rpc UpdateParams   (MsgUpdateParams  ) returns (MsgUpdateParamsResponse  );
   rpc SendCreatePair (MsgSendCreatePair) returns (MsgSendCreatePairResponse);
   rpc SendSellOrder  (MsgSendSellOrder ) returns (MsgSendSellOrderResponse );
+  rpc SendBuyOrder   (MsgSendBuyOrder  ) returns (MsgSendBuyOrderResponse  );
 }
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
@@ -63,4 +64,18 @@ message MsgSendSellOrder {
 }
 
 message MsgSendSellOrderResponse {}
+
+message MsgSendBuyOrder {
+  option (cosmos.msg.v1.signer) = "creator";
+  string amountDenom      = 5;
+  int32  amount           = 6;
+  string priceDenom       = 7;
+  int32  price            = 8;
+  string creator          = 1;
+  string port             = 2;
+  string channelID        = 3;
+  uint64 timeoutTimestamp = 4;
+}
+
+message MsgSendBuyOrderResponse {}
 

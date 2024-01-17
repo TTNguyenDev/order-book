@@ -22,6 +22,7 @@ const (
 	Msg_UpdateParams_FullMethodName   = "/orderbookinterchange.dex.Msg/UpdateParams"
 	Msg_SendCreatePair_FullMethodName = "/orderbookinterchange.dex.Msg/SendCreatePair"
 	Msg_SendSellOrder_FullMethodName  = "/orderbookinterchange.dex.Msg/SendSellOrder"
+	Msg_SendBuyOrder_FullMethodName   = "/orderbookinterchange.dex.Msg/SendBuyOrder"
 )
 
 // MsgClient is the client API for Msg service.
@@ -33,6 +34,7 @@ type MsgClient interface {
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
 	SendCreatePair(ctx context.Context, in *MsgSendCreatePair, opts ...grpc.CallOption) (*MsgSendCreatePairResponse, error)
 	SendSellOrder(ctx context.Context, in *MsgSendSellOrder, opts ...grpc.CallOption) (*MsgSendSellOrderResponse, error)
+	SendBuyOrder(ctx context.Context, in *MsgSendBuyOrder, opts ...grpc.CallOption) (*MsgSendBuyOrderResponse, error)
 }
 
 type msgClient struct {
@@ -70,6 +72,15 @@ func (c *msgClient) SendSellOrder(ctx context.Context, in *MsgSendSellOrder, opt
 	return out, nil
 }
 
+func (c *msgClient) SendBuyOrder(ctx context.Context, in *MsgSendBuyOrder, opts ...grpc.CallOption) (*MsgSendBuyOrderResponse, error) {
+	out := new(MsgSendBuyOrderResponse)
+	err := c.cc.Invoke(ctx, Msg_SendBuyOrder_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -79,6 +90,7 @@ type MsgServer interface {
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
 	SendCreatePair(context.Context, *MsgSendCreatePair) (*MsgSendCreatePairResponse, error)
 	SendSellOrder(context.Context, *MsgSendSellOrder) (*MsgSendSellOrderResponse, error)
+	SendBuyOrder(context.Context, *MsgSendBuyOrder) (*MsgSendBuyOrderResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -94,6 +106,9 @@ func (UnimplementedMsgServer) SendCreatePair(context.Context, *MsgSendCreatePair
 }
 func (UnimplementedMsgServer) SendSellOrder(context.Context, *MsgSendSellOrder) (*MsgSendSellOrderResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendSellOrder not implemented")
+}
+func (UnimplementedMsgServer) SendBuyOrder(context.Context, *MsgSendBuyOrder) (*MsgSendBuyOrderResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendBuyOrder not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -162,6 +177,24 @@ func _Msg_SendSellOrder_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_SendBuyOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSendBuyOrder)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).SendBuyOrder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_SendBuyOrder_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).SendBuyOrder(ctx, req.(*MsgSendBuyOrder))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -180,6 +213,10 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendSellOrder",
 			Handler:    _Msg_SendSellOrder_Handler,
+		},
+		{
+			MethodName: "SendBuyOrder",
+			Handler:    _Msg_SendBuyOrder_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

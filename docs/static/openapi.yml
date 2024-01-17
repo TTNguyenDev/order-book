@@ -18910,6 +18910,60 @@ paths:
               parameters.
       tags:
         - Msg
+  /orderbookinterchange.dex.Msg/SendBuyOrder:
+    post:
+      operationId: OrderbookinterchangeDexMsg_SendBuyOrder
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              amountDenom:
+                type: string
+              amount:
+                type: integer
+                format: int32
+              priceDenom:
+                type: string
+              price:
+                type: integer
+                format: int32
+              creator:
+                type: string
+              port:
+                type: string
+              channelID:
+                type: string
+              timeoutTimestamp:
+                type: string
+                format: uint64
+      tags:
+        - Msg
   /orderbookinterchange.dex.Msg/SendCreatePair:
     post:
       operationId: OrderbookinterchangeDexMsg_SendCreatePair
@@ -27074,6 +27128,30 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
+  orderbookinterchange.dex.MsgSendBuyOrder:
+    type: object
+    properties:
+      amountDenom:
+        type: string
+      amount:
+        type: integer
+        format: int32
+      priceDenom:
+        type: string
+      price:
+        type: integer
+        format: int32
+      creator:
+        type: string
+      port:
+        type: string
+      channelID:
+        type: string
+      timeoutTimestamp:
+        type: string
+        format: uint64
+  orderbookinterchange.dex.MsgSendBuyOrderResponse:
+    type: object
   orderbookinterchange.dex.MsgSendCreatePair:
     type: object
     properties:
