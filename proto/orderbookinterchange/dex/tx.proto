@@ -21,6 +21,7 @@ service Msg {
   rpc SendSellOrder   (MsgSendSellOrder  ) returns (MsgSendSellOrderResponse  );
   rpc SendBuyOrder    (MsgSendBuyOrder   ) returns (MsgSendBuyOrderResponse   );
   rpc CancelSellOrder (MsgCancelSellOrder) returns (MsgCancelSellOrderResponse);
+  rpc CancelBuyOrder  (MsgCancelBuyOrder ) returns (MsgCancelBuyOrderResponse );
 }
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
@@ -91,4 +92,16 @@ message MsgCancelSellOrder {
 }
 
 message MsgCancelSellOrderResponse {}
+
+message MsgCancelBuyOrder {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator     = 1;
+  string port        = 2;
+  string channel     = 3;
+  string amountDenom = 4;
+  string priceDenom  = 5;
+  int32  orderId     = 6;
+}
+
+message MsgCancelBuyOrderResponse {}
 

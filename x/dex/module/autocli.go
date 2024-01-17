@@ -56,6 +56,12 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Short:          "Send a cancel-sell-order tx",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "port"}, {ProtoField: "channel"}, {ProtoField: "amountDenom"}, {ProtoField: "priceDenom"}, {ProtoField: "orderId"}},
 				},
+				{
+					RpcMethod:      "CancelBuyOrder",
+					Use:            "cancel-buy-order [port] [channel] [amount-denom] [price-denom] [order-id]",
+					Short:          "Send a cancel-buy-order tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "port"}, {ProtoField: "channel"}, {ProtoField: "amountDenom"}, {ProtoField: "priceDenom"}, {ProtoField: "orderId"}},
+				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},
 		},

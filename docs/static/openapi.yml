@@ -19284,6 +19284,54 @@ paths:
           type: string
       tags:
         - Query
+  /orderbookinterchange.dex.Msg/CancelBuyOrder:
+    post:
+      operationId: OrderbookinterchangeDexMsg_CancelBuyOrder
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              creator:
+                type: string
+              port:
+                type: string
+              channel:
+                type: string
+              amountDenom:
+                type: string
+              priceDenom:
+                type: string
+              orderId:
+                type: integer
+                format: int32
+      tags:
+        - Msg
   /orderbookinterchange.dex.Msg/CancelSellOrder:
     post:
       operationId: OrderbookinterchangeDexMsg_CancelSellOrder
@@ -27385,6 +27433,24 @@ definitions:
         type: string
       priceDenom:
         type: string
+  orderbookinterchange.dex.MsgCancelBuyOrder:
+    type: object
+    properties:
+      creator:
+        type: string
+      port:
+        type: string
+      channel:
+        type: string
+      amountDenom:
+        type: string
+      priceDenom:
+        type: string
+      orderId:
+        type: integer
+        format: int32
+  orderbookinterchange.dex.MsgCancelBuyOrderResponse:
+    type: object
   orderbookinterchange.dex.MsgCancelSellOrder:
     type: object
     properties:
