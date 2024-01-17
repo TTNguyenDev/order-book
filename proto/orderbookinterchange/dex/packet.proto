@@ -8,6 +8,7 @@ message DexPacketData {
   oneof packet {
     NoData               noData           = 1;
     CreatePairPacketData createPairPacket = 2;
+    SellOrderPacketData  sellOrderPacket  = 3;
   }
 }
 
@@ -21,4 +22,18 @@ message CreatePairPacketData {
 
 // CreatePairPacketAck defines a struct for the packet acknowledgment
 message CreatePairPacketAck {}
+
+// SellOrderPacketData defines a struct for the packet payload
+message SellOrderPacketData {
+  string amountDenom = 1;
+  int32  amount      = 2;
+  string priceDenom  = 3;
+  int32  price       = 4;
+}
+
+// SellOrderPacketAck defines a struct for the packet acknowledgment
+message SellOrderPacketAck {
+  int32 remainingAmount = 1;
+  int32 gain            = 2;
+}
 

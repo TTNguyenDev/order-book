@@ -18910,6 +18910,161 @@ paths:
               parameters.
       tags:
         - Msg
+  /orderbookinterchange.dex.Msg/SendCreatePair:
+    post:
+      operationId: OrderbookinterchangeDexMsg_SendCreatePair
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              sourceDenom:
+                type: string
+              targetDenom:
+                type: string
+              creator:
+                type: string
+              port:
+                type: string
+              channelID:
+                type: string
+              timeoutTimestamp:
+                type: string
+                format: uint64
+      tags:
+        - Msg
+  /orderbookinterchange.dex.Msg/SendSellOrder:
+    post:
+      operationId: OrderbookinterchangeDexMsg_SendSellOrder
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              amountDenom:
+                type: string
+              amount:
+                type: integer
+                format: int32
+              priceDenom:
+                type: string
+              price:
+                type: integer
+                format: int32
+              creator:
+                type: string
+              port:
+                type: string
+              channelID:
+                type: string
+              timeoutTimestamp:
+                type: string
+                format: uint64
+      tags:
+        - Msg
+  /orderbookinterchange.dex.Msg/UpdateParams:
+    post:
+      summary: |-
+        UpdateParams defines a (governance) operation for updating the module
+        parameters. The authority defaults to the x/gov module account.
+      operationId: OrderbookinterchangeDexMsg_UpdateParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            description: >-
+              MsgUpdateParamsResponse defines the response structure for
+              executing a
+
+              MsgUpdateParams message.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: body
+          description: MsgUpdateParams is the Msg/UpdateParams request type.
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              authority:
+                type: string
+                description: >-
+                  authority is the address that controls the module (defaults to
+                  x/gov unless overwritten).
+              params:
+                description: 'NOTE: All parameters must be supplied.'
+                type: object
+            description: MsgUpdateParams is the Msg/UpdateParams request type.
+      tags:
+        - Msg
   /orderbook-interchange/dex/buy_order_book:
     get:
       operationId: OrderbookinterchangeDexQuery_BuyOrderBookAll
@@ -19284,107 +19439,6 @@ paths:
           type: string
       tags:
         - Query
-  /orderbookinterchange.dex.Msg/SendCreatePair:
-    post:
-      operationId: OrderbookinterchangeDexMsg_SendCreatePair
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            type: object
-            properties:
-              sourceDenom:
-                type: string
-              targetDenom:
-                type: string
-              creator:
-                type: string
-              port:
-                type: string
-              channelID:
-                type: string
-              timeoutTimestamp:
-                type: string
-                format: uint64
-      tags:
-        - Msg
-  /orderbookinterchange.dex.Msg/UpdateParams:
-    post:
-      summary: |-
-        UpdateParams defines a (governance) operation for updating the module
-        parameters. The authority defaults to the x/gov module account.
-      operationId: OrderbookinterchangeDexMsg_UpdateParams
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            description: >-
-              MsgUpdateParamsResponse defines the response structure for
-              executing a
-
-              MsgUpdateParams message.
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: body
-          description: MsgUpdateParams is the Msg/UpdateParams request type.
-          in: body
-          required: true
-          schema:
-            type: object
-            properties:
-              authority:
-                type: string
-                description: >-
-                  authority is the address that controls the module (defaults to
-                  x/gov unless overwritten).
-              params:
-                description: 'NOTE: All parameters must be supplied.'
-                type: object
-            description: MsgUpdateParams is the Msg/UpdateParams request type.
-      tags:
-        - Msg
 definitions:
   cosmos.auth.v1beta1.MsgUpdateParams:
     type: object
@@ -27020,6 +27074,68 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
+  orderbookinterchange.dex.MsgSendCreatePair:
+    type: object
+    properties:
+      sourceDenom:
+        type: string
+      targetDenom:
+        type: string
+      creator:
+        type: string
+      port:
+        type: string
+      channelID:
+        type: string
+      timeoutTimestamp:
+        type: string
+        format: uint64
+  orderbookinterchange.dex.MsgSendCreatePairResponse:
+    type: object
+  orderbookinterchange.dex.MsgSendSellOrder:
+    type: object
+    properties:
+      amountDenom:
+        type: string
+      amount:
+        type: integer
+        format: int32
+      priceDenom:
+        type: string
+      price:
+        type: integer
+        format: int32
+      creator:
+        type: string
+      port:
+        type: string
+      channelID:
+        type: string
+      timeoutTimestamp:
+        type: string
+        format: uint64
+  orderbookinterchange.dex.MsgSendSellOrderResponse:
+    type: object
+  orderbookinterchange.dex.MsgUpdateParams:
+    type: object
+    properties:
+      authority:
+        type: string
+        description: >-
+          authority is the address that controls the module (defaults to x/gov
+          unless overwritten).
+      params:
+        description: 'NOTE: All parameters must be supplied.'
+        type: object
+    description: MsgUpdateParams is the Msg/UpdateParams request type.
+  orderbookinterchange.dex.MsgUpdateParamsResponse:
+    type: object
+    description: |-
+      MsgUpdateParamsResponse defines the response structure for executing a
+      MsgUpdateParams message.
+  orderbookinterchange.dex.Params:
+    type: object
+    description: Params defines the parameters for the module.
   cosmos.base.query.v1beta1.PageRequest:
     type: object
     properties:
@@ -27106,9 +27222,6 @@ definitions:
         type: string
       priceDenom:
         type: string
-  orderbookinterchange.dex.Params:
-    type: object
-    description: Params defines the parameters for the module.
   orderbookinterchange.dex.QueryAllBuyOrderBookResponse:
     type: object
     properties:
@@ -27229,38 +27342,3 @@ definitions:
         type: string
       priceDenom:
         type: string
-  orderbookinterchange.dex.MsgSendCreatePair:
-    type: object
-    properties:
-      sourceDenom:
-        type: string
-      targetDenom:
-        type: string
-      creator:
-        type: string
-      port:
-        type: string
-      channelID:
-        type: string
-      timeoutTimestamp:
-        type: string
-        format: uint64
-  orderbookinterchange.dex.MsgSendCreatePairResponse:
-    type: object
-  orderbookinterchange.dex.MsgUpdateParams:
-    type: object
-    properties:
-      authority:
-        type: string
-        description: >-
-          authority is the address that controls the module (defaults to x/gov
-          unless overwritten).
-      params:
-        description: 'NOTE: All parameters must be supplied.'
-        type: object
-    description: MsgUpdateParams is the Msg/UpdateParams request type.
-  orderbookinterchange.dex.MsgUpdateParamsResponse:
-    type: object
-    description: |-
-      MsgUpdateParamsResponse defines the response structure for executing a
-      MsgUpdateParams message.
