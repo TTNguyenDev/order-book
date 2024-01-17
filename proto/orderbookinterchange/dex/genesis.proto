@@ -5,6 +5,7 @@ package orderbookinterchange.dex;
 import "amino/amino.proto";
 import "gogoproto/gogo.proto";
 import "orderbookinterchange/dex/params.proto";
+import "orderbookinterchange/dex/sell_order_book.proto";
 
 option go_package = "orderbook-interchange/x/dex/types";
 
@@ -12,7 +13,8 @@ option go_package = "orderbook-interchange/x/dex/types";
 message GenesisState {
   
   // params defines all the parameters of the module.
-  Params params  = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
-  string port_id = 2;
+           Params        params            = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+           string        port_id           = 2;
+  repeated SellOrderBook sellOrderBookList = 3 [(gogoproto.nullable) = false] ;
 }
 
