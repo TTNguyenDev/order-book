@@ -50,6 +50,12 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod: "UpdateParams",
 					Skip:      true, // skipped because authority gated
 				},
+				{
+					RpcMethod:      "CancelSellOrder",
+					Use:            "cancel-sell-order [port] [channel] [amount-denom] [price-denom] [order-id]",
+					Short:          "Send a cancel-sell-order tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "port"}, {ProtoField: "channel"}, {ProtoField: "amountDenom"}, {ProtoField: "priceDenom"}, {ProtoField: "orderId"}},
+				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},
 		},

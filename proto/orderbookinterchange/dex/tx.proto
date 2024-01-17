@@ -16,10 +16,11 @@ service Msg {
   
   // UpdateParams defines a (governance) operation for updating the module
   // parameters. The authority defaults to the x/gov module account.
-  rpc UpdateParams   (MsgUpdateParams  ) returns (MsgUpdateParamsResponse  );
-  rpc SendCreatePair (MsgSendCreatePair) returns (MsgSendCreatePairResponse);
-  rpc SendSellOrder  (MsgSendSellOrder ) returns (MsgSendSellOrderResponse );
-  rpc SendBuyOrder   (MsgSendBuyOrder  ) returns (MsgSendBuyOrderResponse  );
+  rpc UpdateParams    (MsgUpdateParams   ) returns (MsgUpdateParamsResponse   );
+  rpc SendCreatePair  (MsgSendCreatePair ) returns (MsgSendCreatePairResponse );
+  rpc SendSellOrder   (MsgSendSellOrder  ) returns (MsgSendSellOrderResponse  );
+  rpc SendBuyOrder    (MsgSendBuyOrder   ) returns (MsgSendBuyOrderResponse   );
+  rpc CancelSellOrder (MsgCancelSellOrder) returns (MsgCancelSellOrderResponse);
 }
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
@@ -78,4 +79,16 @@ message MsgSendBuyOrder {
 }
 
 message MsgSendBuyOrderResponse {}
+
+message MsgCancelSellOrder {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator     = 1;
+  string port        = 2;
+  string channel     = 3;
+  string amountDenom = 4;
+  string priceDenom  = 5;
+  int32  orderId     = 6;
+}
+
+message MsgCancelSellOrderResponse {}
 
