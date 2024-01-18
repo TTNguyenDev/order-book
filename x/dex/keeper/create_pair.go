@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"errors"
+	"orderbook-interchange/x/dex/types"
 
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -9,7 +10,6 @@ import (
 	clienttypes "github.com/cosmos/ibc-go/v8/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v8/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v8/modules/core/24-host"
-	"orderbook-interchange/x/dex/types"
 )
 
 // TransmitCreatePairPacket transmits the packet over IBC with the specified source port and source channel
@@ -41,7 +41,16 @@ func (k Keeper) OnRecvCreatePairPacket(ctx sdk.Context, packet channeltypes.Pack
 		return packetAck, err
 	}
 
-	// TODO: packet reception logic
+	pairIndex := types.OrderBookIndex(packet.SourcePort, packet.SourceChannel, data.SourceDenom, data.TargetDenom)
+
+	_, found := k.GetBuyOrderBook(ctx, pairIndex)
+	if found {
+		return packetAck, errors.New("the pair already exist")
+	}
+
+	book := types.NewBuyOrderBook(data.SourceDenom, data.TargetDenom)
+	book.Index = pairIndex
+	k.SetBuyOrderBook(ctx, book)
 
 	return packetAck, nil
 }
@@ -51,10 +60,6 @@ func (k Keeper) OnRecvCreatePairPacket(ctx sdk.Context, packet channeltypes.Pack
 func (k Keeper) OnAcknowledgementCreatePairPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CreatePairPacketData, ack channeltypes.Acknowledgement) error {
 	switch dispatchedAck := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Error:
-
-		// TODO: failed acknowledgement logic
-		_ = dispatchedAck.Error
-
 		return nil
 	case *channeltypes.Acknowledgement_Result:
 		// Decode the packet acknowledgment
@@ -65,7 +70,10 @@ func (k Keeper) OnAcknowledgementCreatePairPacket(ctx sdk.Context, packet channe
 			return errors.New("cannot unmarshal acknowledgment")
 		}
 
-		// TODO: successful acknowledgement logic
+		pairIndex := types.OrderBookIndex(packet.SourcePort, packet.SourceChannel, data.SourceDenom, data.TargetDenom)
+		book := types.NewSellOrderBook(data.SourceDenom, data.TargetDenom)
+		book.Index = pairIndex
+		k.SetSellOrderBook(ctx, book)
 
 		return nil
 	default:
@@ -76,7 +84,6 @@ func (k Keeper) OnAcknowledgementCreatePairPacket(ctx sdk.Context, packet channe
 
 // OnTimeoutCreatePairPacket responds to the case where a packet has not been transmitted because of a timeout
 func (k Keeper) OnTimeoutCreatePairPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CreatePairPacketData) error {
-
 	// TODO: packet timeout logic
 
 	return nil

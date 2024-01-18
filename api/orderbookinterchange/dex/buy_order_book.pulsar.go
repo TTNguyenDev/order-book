@@ -17,6 +17,7 @@ var (
 	fd_BuyOrderBook_index       protoreflect.FieldDescriptor
 	fd_BuyOrderBook_amountDenom protoreflect.FieldDescriptor
 	fd_BuyOrderBook_priceDenom  protoreflect.FieldDescriptor
+	fd_BuyOrderBook_book        protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -25,6 +26,7 @@ func init() {
 	fd_BuyOrderBook_index = md_BuyOrderBook.Fields().ByName("index")
 	fd_BuyOrderBook_amountDenom = md_BuyOrderBook.Fields().ByName("amountDenom")
 	fd_BuyOrderBook_priceDenom = md_BuyOrderBook.Fields().ByName("priceDenom")
+	fd_BuyOrderBook_book = md_BuyOrderBook.Fields().ByName("book")
 }
 
 var _ protoreflect.Message = (*fastReflection_BuyOrderBook)(nil)
@@ -110,6 +112,12 @@ func (x *fastReflection_BuyOrderBook) Range(f func(protoreflect.FieldDescriptor,
 			return
 		}
 	}
+	if x.Book != nil {
+		value := protoreflect.ValueOfMessage(x.Book.ProtoReflect())
+		if !f(fd_BuyOrderBook_book, value) {
+			return
+		}
+	}
 }
 
 // Has reports whether a field is populated.
@@ -131,6 +139,8 @@ func (x *fastReflection_BuyOrderBook) Has(fd protoreflect.FieldDescriptor) bool 
 		return x.AmountDenom != ""
 	case "orderbookinterchange.dex.BuyOrderBook.priceDenom":
 		return x.PriceDenom != ""
+	case "orderbookinterchange.dex.BuyOrderBook.book":
+		return x.Book != nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: orderbookinterchange.dex.BuyOrderBook"))
@@ -153,6 +163,8 @@ func (x *fastReflection_BuyOrderBook) Clear(fd protoreflect.FieldDescriptor) {
 		x.AmountDenom = ""
 	case "orderbookinterchange.dex.BuyOrderBook.priceDenom":
 		x.PriceDenom = ""
+	case "orderbookinterchange.dex.BuyOrderBook.book":
+		x.Book = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: orderbookinterchange.dex.BuyOrderBook"))
@@ -178,6 +190,9 @@ func (x *fastReflection_BuyOrderBook) Get(descriptor protoreflect.FieldDescripto
 	case "orderbookinterchange.dex.BuyOrderBook.priceDenom":
 		value := x.PriceDenom
 		return protoreflect.ValueOfString(value)
+	case "orderbookinterchange.dex.BuyOrderBook.book":
+		value := x.Book
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: orderbookinterchange.dex.BuyOrderBook"))
@@ -204,6 +219,8 @@ func (x *fastReflection_BuyOrderBook) Set(fd protoreflect.FieldDescriptor, value
 		x.AmountDenom = value.Interface().(string)
 	case "orderbookinterchange.dex.BuyOrderBook.priceDenom":
 		x.PriceDenom = value.Interface().(string)
+	case "orderbookinterchange.dex.BuyOrderBook.book":
+		x.Book = value.Message().Interface().(*OrderBook)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: orderbookinterchange.dex.BuyOrderBook"))
@@ -224,6 +241,11 @@ func (x *fastReflection_BuyOrderBook) Set(fd protoreflect.FieldDescriptor, value
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_BuyOrderBook) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
+	case "orderbookinterchange.dex.BuyOrderBook.book":
+		if x.Book == nil {
+			x.Book = new(OrderBook)
+		}
+		return protoreflect.ValueOfMessage(x.Book.ProtoReflect())
 	case "orderbookinterchange.dex.BuyOrderBook.index":
 		panic(fmt.Errorf("field index of message orderbookinterchange.dex.BuyOrderBook is not mutable"))
 	case "orderbookinterchange.dex.BuyOrderBook.amountDenom":
@@ -249,6 +271,9 @@ func (x *fastReflection_BuyOrderBook) NewField(fd protoreflect.FieldDescriptor) 
 		return protoreflect.ValueOfString("")
 	case "orderbookinterchange.dex.BuyOrderBook.priceDenom":
 		return protoreflect.ValueOfString("")
+	case "orderbookinterchange.dex.BuyOrderBook.book":
+		m := new(OrderBook)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: orderbookinterchange.dex.BuyOrderBook"))
@@ -330,6 +355,10 @@ func (x *fastReflection_BuyOrderBook) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
+		if x.Book != nil {
+			l = options.Size(x.Book)
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
 		}
@@ -358,6 +387,20 @@ func (x *fastReflection_BuyOrderBook) ProtoMethods() *protoiface.Methods {
 		if x.unknownFields != nil {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.Book != nil {
+			encoded, err := options.Marshal(x.Book)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+			i--
+			dAtA[i] = 0x22
 		}
 		if len(x.PriceDenom) > 0 {
 			i -= len(x.PriceDenom)
@@ -525,6 +568,42 @@ func (x *fastReflection_BuyOrderBook) ProtoMethods() *protoiface.Methods {
 				}
 				x.PriceDenom = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
+			case 4:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Book", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.Book == nil {
+					x.Book = &OrderBook{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Book); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -578,9 +657,10 @@ type BuyOrderBook struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Index       string `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
-	AmountDenom string `protobuf:"bytes,2,opt,name=amountDenom,proto3" json:"amountDenom,omitempty"`
-	PriceDenom  string `protobuf:"bytes,3,opt,name=priceDenom,proto3" json:"priceDenom,omitempty"`
+	Index       string     `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
+	AmountDenom string     `protobuf:"bytes,2,opt,name=amountDenom,proto3" json:"amountDenom,omitempty"`
+	PriceDenom  string     `protobuf:"bytes,3,opt,name=priceDenom,proto3" json:"priceDenom,omitempty"`
+	Book        *OrderBook `protobuf:"bytes,4,opt,name=book,proto3" json:"book,omitempty"`
 }
 
 func (x *BuyOrderBook) Reset() {
@@ -624,6 +704,13 @@ func (x *BuyOrderBook) GetPriceDenom() string {
 	return ""
 }
 
+func (x *BuyOrderBook) GetBook() *OrderBook {
+	if x != nil {
+		return x.Book
+	}
+	return nil
+}
+
 var File_orderbookinterchange_dex_buy_order_book_proto protoreflect.FileDescriptor
 
 var file_orderbookinterchange_dex_buy_order_book_proto_rawDesc = []byte{
@@ -631,14 +718,20 @@ var file_orderbookinterchange_dex_buy_order_book_proto_rawDesc = []byte{
 	0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x2f, 0x64, 0x65, 0x78, 0x2f, 0x62, 0x75, 0x79, 0x5f, 0x6f,
 	0x72, 0x64, 0x65, 0x72, 0x5f, 0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12,
 	0x18, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x62, 0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x63,
-	0x68, 0x61, 0x6e, 0x67, 0x65, 0x2e, 0x64, 0x65, 0x78, 0x22, 0x66, 0x0a, 0x0c, 0x42, 0x75, 0x79,
-	0x4f, 0x72, 0x64, 0x65, 0x72, 0x42, 0x6f, 0x6f, 0x6b, 0x12, 0x14, 0x0a, 0x05, 0x69, 0x6e, 0x64,
-	0x65, 0x78, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x12,
-	0x20, 0x0a, 0x0b, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x44, 0x65, 0x6e, 0x6f, 0x6d, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x44, 0x65, 0x6e, 0x6f,
-	0x6d, 0x12, 0x1e, 0x0a, 0x0a, 0x70, 0x72, 0x69, 0x63, 0x65, 0x44, 0x65, 0x6e, 0x6f, 0x6d, 0x18,
-	0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x70, 0x72, 0x69, 0x63, 0x65, 0x44, 0x65, 0x6e, 0x6f,
-	0x6d, 0x42, 0xdd, 0x01, 0x0a, 0x1c, 0x63, 0x6f, 0x6d, 0x2e, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x62,
+	0x68, 0x61, 0x6e, 0x67, 0x65, 0x2e, 0x64, 0x65, 0x78, 0x1a, 0x24, 0x6f, 0x72, 0x64, 0x65, 0x72,
+	0x62, 0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x2f,
+	0x64, 0x65, 0x78, 0x2f, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22,
+	0x9f, 0x01, 0x0a, 0x0c, 0x42, 0x75, 0x79, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x42, 0x6f, 0x6f, 0x6b,
+	0x12, 0x14, 0x0a, 0x05, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x05, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x20, 0x0a, 0x0b, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74,
+	0x44, 0x65, 0x6e, 0x6f, 0x6d, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x61, 0x6d, 0x6f,
+	0x75, 0x6e, 0x74, 0x44, 0x65, 0x6e, 0x6f, 0x6d, 0x12, 0x1e, 0x0a, 0x0a, 0x70, 0x72, 0x69, 0x63,
+	0x65, 0x44, 0x65, 0x6e, 0x6f, 0x6d, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x70, 0x72,
+	0x69, 0x63, 0x65, 0x44, 0x65, 0x6e, 0x6f, 0x6d, 0x12, 0x37, 0x0a, 0x04, 0x62, 0x6f, 0x6f, 0x6b,
+	0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x62, 0x6f,
+	0x6f, 0x6b, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x2e, 0x64, 0x65,
+	0x78, 0x2e, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x04, 0x62, 0x6f, 0x6f,
+	0x6b, 0x42, 0xdd, 0x01, 0x0a, 0x1c, 0x63, 0x6f, 0x6d, 0x2e, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x62,
 	0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x2e, 0x64,
 	0x65, 0x78, 0x42, 0x11, 0x42, 0x75, 0x79, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x42, 0x6f, 0x6f, 0x6b,
 	0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x29, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73,
@@ -670,13 +763,15 @@ func file_orderbookinterchange_dex_buy_order_book_proto_rawDescGZIP() []byte {
 var file_orderbookinterchange_dex_buy_order_book_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_orderbookinterchange_dex_buy_order_book_proto_goTypes = []interface{}{
 	(*BuyOrderBook)(nil), // 0: orderbookinterchange.dex.BuyOrderBook
+	(*OrderBook)(nil),    // 1: orderbookinterchange.dex.OrderBook
 }
 var file_orderbookinterchange_dex_buy_order_book_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: orderbookinterchange.dex.BuyOrderBook.book:type_name -> orderbookinterchange.dex.OrderBook
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_orderbookinterchange_dex_buy_order_book_proto_init() }
@@ -684,6 +779,7 @@ func file_orderbookinterchange_dex_buy_order_book_proto_init() {
 	if File_orderbookinterchange_dex_buy_order_book_proto != nil {
 		return
 	}
+	file_orderbookinterchange_dex_order_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_orderbookinterchange_dex_buy_order_book_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*BuyOrderBook); i {
