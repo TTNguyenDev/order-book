@@ -28,7 +28,7 @@ func (k msgServer) CancelSellOrder(goCtx context.Context, msg *types.MsgCancelSe
 
 	k.SetSellOrderBook(ctx, s)
 
-	seller, err := sdk.AccAddressFromBech32(order.creator)
+	seller, err := sdk.AccAddressFromBech32(order.Creator)
 	if err != nil {
 		return &types.MsgCancelSellOrderResponse{}, err
 	}
