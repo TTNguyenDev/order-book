@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"errors"
+	"orderbook-interchange/x/dex/types"
 
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -9,7 +10,6 @@ import (
 	clienttypes "github.com/cosmos/ibc-go/v8/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v8/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v8/modules/core/24-host"
-	"orderbook-interchange/x/dex/types"
 )
 
 // TransmitBuyOrderPacket transmits the packet over IBC with the specified source port and source channel
@@ -41,8 +41,34 @@ func (k Keeper) OnRecvBuyOrderPacket(ctx sdk.Context, packet channeltypes.Packet
 		return packetAck, err
 	}
 
-	// TODO: packet reception logic
+	pairIndex := types.OrderBookIndex(packet.SourcePort, packet.SourceChannel, data.AmountDenom, data.PriceDenom)
+	book, found := k.GetSellOrderBook(ctx, pairIndex)
+	if !found {
+		return packetAck, errors.New("the pair doesn't exist")
+	}
 
+	remaining, liquidated, purchase, _ := book.FillBuyOrder(types.Order{Amount: data.Amount, Price: data.Price})
+
+	packetAck.RemainingAmount = remaining.Amount
+	packetAck.Purchase = purchase
+
+	finalPriceDenom, saved := k.OrigialDenom(ctx, packet.DestinationPort, packet.DestinationChannel, data.PriceDenom)
+	if !saved {
+		finalPriceDenom = VoucherDenom(packet.SourcePort, packet.SourceChannel, data.PriceDenom)
+	}
+
+	for _, liquidation := range liquidated {
+		liquidation := liquidation
+		addr, err := sdk.AccAddressFromBech32(liquidation.Creator)
+		if err != nil {
+			return packetAck, err
+		}
+
+		if err := k.SafeMint(ctx, packet.DestinationPort, packet.DestinationChannel, addr, finalPriceDenom, liquidation.Amount*liquidation.Price); err != nil {
+			return packetAck, err
+		}
+	}
+	k.SetSellOrderBook(ctx, book)
 	return packetAck, nil
 }
 
@@ -52,8 +78,14 @@ func (k Keeper) OnAcknowledgementBuyOrderPacket(ctx sdk.Context, packet channelt
 	switch dispatchedAck := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Error:
 
-		// TODO: failed acknowledgement logic
-		_ = dispatchedAck.Error
+		receiver, err := sdk.AccAddressFromBech32(data.Buyer)
+		if err != nil {
+			return err
+		}
+
+		if err := k.SafeMint(ctx, packet.SourcePort, packet.SourceChannel, receiver, data.PriceDenom, data.Amount*data.Price); err != nil {
+			return err
+		}
 
 		return nil
 	case *channeltypes.Acknowledgement_Result:
@@ -65,7 +97,39 @@ func (k Keeper) OnAcknowledgementBuyOrderPacket(ctx sdk.Context, packet channelt
 			return errors.New("cannot unmarshal acknowledgment")
 		}
 
-		// TODO: successful acknowledgement logic
+		pairIndex := types.OrderBookIndex(packet.SourcePort, packet.SourceChannel, data.AmountDenom, data.PriceDenom)
+		book, found := k.GetBuyOrderBook(ctx, pairIndex)
+		if !found {
+			panic("buy order book must exist")
+		}
+
+		if packetAck.RemainingAmount > 0 {
+			_, err := book.AppendOrder(
+				data.Buyer,
+				packetAck.RemainingAmount,
+				data.Price,
+			)
+			if err != nil {
+				return err
+			}
+			k.SetBuyOrderBook(ctx, book)
+		}
+
+		if packetAck.Purchase > 0 {
+			receier, err := sdk.AccAddressFromBech32(data.Buyer)
+			if err != nil {
+				return err
+			}
+
+			finalAmountDenom, saved := k.OrigialDenom(ctx, packet.SourcePort, packet.SourceChannel, data.AmountDenom)
+			if !saved {
+				finalAmountDenom = VoucherDenom(packet.DestinationPort, packet.DestinationChannel, data.AmountDenom)
+			}
+
+			if err := k.SafeMint(ctx, packet.SourcePort, packet.SourceChannel, receier, finalAmountDenom, packetAck.Purchase); err != nil {
+				return err
+			}
+		}
 
 		return nil
 	default:
@@ -76,8 +140,14 @@ func (k Keeper) OnAcknowledgementBuyOrderPacket(ctx sdk.Context, packet channelt
 
 // OnTimeoutBuyOrderPacket responds to the case where a packet has not been transmitted because of a timeout
 func (k Keeper) OnTimeoutBuyOrderPacket(ctx sdk.Context, packet channeltypes.Packet, data types.BuyOrderPacketData) error {
+	receiver, err := sdk.AccAddressFromBech32(data.Buyer)
+	if err != nil {
+		return err
+	}
 
-	// TODO: packet timeout logic
+	if err := k.SafeMint(ctx, packet.SourcePort, packet.SourceChannel, receiver, data.PriceDenom, data.Amount*data.Price); err != nil {
+		return err
+	}
 
 	return nil
 }
