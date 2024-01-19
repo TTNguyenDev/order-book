@@ -86,7 +86,7 @@ func (k Keeper) OnAcknowledgementSellOrderPacket(ctx sdk.Context, packet channel
       return err
     }
 
-    if err := k.SafeMint(ct, packet.SourcePort, packet.SourceChannel, receiver, data.AmountDenom, data.Amount) {
+    if err := k.SafeMint(ct, packet.SourcePort, packet.SourceChannel, receiver, data.AmountDenom, data.Amount); err != nil {
       return err
     }
 		return nil
