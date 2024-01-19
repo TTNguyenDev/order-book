@@ -4,7 +4,7 @@ import (
 	"orderbook-interchange/x/dex/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	ibctransfertypes "github.com/cosmos/ibc-go/v6/modules/apps/transfer/types"
+	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 )
 
 func (k Keeper) SaveVoucherDenom(ctx sdk.Context, port string, channel string, denom string) {

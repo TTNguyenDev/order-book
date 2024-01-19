@@ -8,3 +8,7 @@ func NewSellOrderBook(AmountDenom string, PriceDenom string) SellOrderBook {
 		Book:        &book,
 	}
 }
+
+func (s *SellOrderBook) AppendOrder(creator string, amount int32, price int32) (int32, error) {
+	return s.Book.appendOrder(creator, amount, price, Decreasing)
+}

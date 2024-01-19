@@ -2,11 +2,11 @@ package keeper
 
 import (
 	"context"
+	"orderbook-interchange/x/dex/types"
 
 	"cosmossdk.io/store/prefix"
 	storetypes "cosmossdk.io/store/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
-	"orderbook-interchange/x/dex/types"
 )
 
 // SetBuyOrderBook set a specific buyOrderBook in the store from its index
@@ -23,7 +23,6 @@ func (k Keeper) SetBuyOrderBook(ctx context.Context, buyOrderBook types.BuyOrder
 func (k Keeper) GetBuyOrderBook(
 	ctx context.Context,
 	index string,
-
 ) (val types.BuyOrderBook, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.BuyOrderBookKeyPrefix))
@@ -43,7 +42,6 @@ func (k Keeper) GetBuyOrderBook(
 func (k Keeper) RemoveBuyOrderBook(
 	ctx context.Context,
 	index string,
-
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.BuyOrderBookKeyPrefix))
